@@ -28,6 +28,10 @@
 //Number of times a Button needs to be "on" to be recognised as such
 #define BOUNCE 100
 
+//*******************************************************//
+//
+//	Structs and Enums
+//
 typedef enum 
 {
 	Negative_Logic = 0, 
@@ -50,20 +54,22 @@ typedef enum
 }DebounceRetVal;
 
 typedef struct{
-	uint16_t new_button_state;
-	uint16_t old_button_state;
-	uint16_t counter;
-	GPIO_TypeDef *Port;
-	uint16_t Pin;
-	ButtonState state;
-	ButtonLogic logic;
-	uint16_t current_button_state;
-} myButton_Handler;
+	uint16_t		new_button_state;
+	uint16_t 		old_button_state;
+	uint16_t	 	counter;
+	GPIO_TypeDef 	*Port;
+	uint16_t 		Pin;
+	ButtonState 	state;
+	ButtonLogic 	logic;
+	uint16_t 		current_button_state;
+}myButton_Handler;
 
-
+//*******************************************************//
+//
+//	Functions
+//
 DebounceRetVal debounce(myButton_Handler *Button);
 void ButtonInit(myButton_Handler Button);
 void DEBOUNCE_ERROR(void);
-//
-//*******************************************************//
+
 #endif /*_DEBOUNCE_H_*/

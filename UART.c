@@ -11,37 +11,15 @@
 
 #include "UART.h"
 
-/*declare the UART Handlers for the active UART modules*/
-#if UART1
-#define UART1_ACTIVE
-extern myUART_Handler UART1Struct;
-#else
-#define UART1_INACTIVE
-#endif
-
-#if UART2
-#define UART2_ACTIVE
-extern myUART_Handler UART2Struct;
-#else
-#define UART2_INACTIVE
-#endif
-
-#if UART3
-#define UART3_ACTIVE
-extern myUART_Handler UART3Struct;
-#else
-#define UART3_INACTIVE
-#endif
-
 //*******************************************************//
 //
 // Function	:
-// Param		: 
-// RetVal		:
+// Param	: 
+// RetVal	:
 //
 void myUART_Write(myUART_Handler *uart)
 {
-	/*Init Protokol Variables*/
+	/*Init Protocol Variables*/
 	uint8_t STARTCHAR[1] = {0x23}; //#
 	uint8_t ENDCHAR[2] = {0x0D, 0x0A}; // /n/r
 	uint8_t cs_h = 0, cs_l = 0;
@@ -105,10 +83,10 @@ void myUART_Read(myUART_Handler *uart)
 	{
 		UART_ERROR(RECEIVE_ERROR);
 	}
-	/*check for startbit*/
+	/*check for start bit*/
 	if(RXBuffer[0] == '#')
 	{
-		/*Decode Protocol and assigne it to the right place*/
+		/*Decode Protocol and assign it to the right place*/
 		uart->RxProtocol.CS = 0;
 		uart->TxProtocol.Device = ((UARTDevice)RXBuffer[1]);
 		uart->RxProtocol.Module = ((TargetModule)RXBuffer[2]);
@@ -154,20 +132,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	static myUART_Handler *UARTStruct;
 	uint16_t ProtocolCS = 0;
 	
-	/*select the uart source the engaged the interrupt and use the corresponding Struct*/
-	#ifdef UART1_ACTIVE
-	if(huart->Instance == USART1) UARTStruct = UART1Struct; 
+	/*select the UART source the engaged the interrupt and use the corresponding Struct*/
+	#ifdef UART1
+	if(huart->Instance == USART1) UARTStruct = &UART1Struct; 
 	#endif
 	
-	#ifdef UART2_ACTIVE
-	if(huart->Instance == USART2) UARTStruct = UART2Struct;
+	#ifdef UART2
+	if(huart->Instance == USART2) UARTStruct = &UART2Struct;
 	#endif
 	
-	#ifdef UART3_ACTIVE
+	#ifdef UART3
 	if(huart->Instance == USART3) UARTStruct = &UART3Struct;
 	#endif
 	
-	/*check for startbit*/
+	/*check for start bit*/
 	if(UARTStruct->uartRXBuf[0] == '#')
 	{
 		Protocol_start = 1;
@@ -249,5 +227,5 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //
 void UART_ERROR(uint8_t Error)
 {
-	while(1);
+	__nop();
 }

@@ -31,10 +31,10 @@
 #define myI2C2		0
 #define mySPI1		0
 #define mySPI2		0
-#define myCAN			0
+#define myCAN		0
 #define myADC1		0
 #define myADC2		0
-#define myRTC			0
+#define myRTC		0
 #define myTIM1		0
 #define myTIM2		0
 #define myTIM3		1
@@ -49,7 +49,7 @@
 void MX_ADC1_Init(ADC_HandleTypeDef *hadc1);
 #endif
 #if myADC2
-void MX_ADC1_Init(ADC_HandleTypeDef *hadc1);
+void MX_ADC2_Init(ADC_HandleTypeDef *hadc2);
 #endif
 #if myCAN
 void MX_CAN_Init(CAN_HandleTypeDef *hcan);

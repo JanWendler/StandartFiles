@@ -5,7 +5,7 @@
 //	wDate		: 23.01.2018
 //	Project		: 
 //	File		: Debounce.c
-//	Function: 
+//	Function	: 
 //
 
 #include "stm32f1xx_hal.h"
@@ -13,7 +13,7 @@
 
 //*******************************************************//
 //
-// Function	: 
+// Function		: 
 // Param		: 
 // RetVal		: 
 //
@@ -30,12 +30,11 @@ void ButtonInit(myButton_Handler Button)
 
 //*******************************************************//
 //
-// Function	: This function debounces buttons and returns the state of the button
+// Function		: This function debounces buttons and returns the state of the button
 // Param		: myButton_Handler *Button		--> this struct contains all the information needed for the debouncing process.
-//
-// RetVal		: 2 = an error occured durring the process.
-//						1 = your button is debounced and has the state you want
-//						0 = your button is not debounced or has not the state you want
+// RetVal		: 2 = an error occurred during the process.
+//				  1 = your button is debounced and has the state you want
+//				  0 = your button is not debounced or has not the state you want
 //
 DebounceRetVal debounce(myButton_Handler *Button)
 {	
@@ -114,7 +113,7 @@ DebounceRetVal debounce(myButton_Handler *Button)
 //
 void DEBOUNCE_ERROR(void)
 {
-	while(1);
+	__nop();
 }
 //
 //

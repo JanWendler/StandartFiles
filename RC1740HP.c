@@ -11,25 +11,9 @@
 
 #include "RC1740HP.h"
 
-/*declare the UART Handlers for the active UART modules*/
-#if UART1
-#define UART1_ACTIVE
-extern myUART_Handler UART1Struct;
-#endif /*UART1*/
-
-#if UART2
-#define UART2_ACTIVE
-extern myUART_Handler UART2Struct;
-#endif /*UART2*/
-
-#if UART3
-#define UART3_ACTIVE
-extern myUART_Handler UART3Struct;
-#endif /*UART3*/
-
 //*******************************************************//
 //
-// Function	:	start the read process of the RF modul
+// Function		: start the read process of the RF module
 // Param		: myUART_Handler *uart
 // RetVal		: non
 //
@@ -41,7 +25,7 @@ void myRC1740HP_read_start(myUART_Handler *uart)
 
 //*******************************************************//
 //
-// Function	:	stop the read process of the RF modul
+// Function		: stop the read process of the RF module
 // Param		: myUART_Handler *uart
 // RetVal		: non
 //
@@ -61,8 +45,8 @@ void myRC1740HP_read_stop(myUART_Handler *uart)
 
 //*******************************************************//
 //
-// Function	:	write to the RF modul
-// Param		:	myUART_Handler *uart
+// Function		: write to the RF module
+// Param		: myUART_Handler *uart
 // RetVal		: non
 //
 void myRC1740HP_write(myUART_Handler *uart)
@@ -72,7 +56,7 @@ void myRC1740HP_write(myUART_Handler *uart)
 
 //*******************************************************//
 //
-// Function	:	configure the RF modul
+// Function		: configure the RF module
 // Param		: myUART_Handler *uart
 // RetVal		: non
 //
@@ -80,7 +64,7 @@ void myRC1740HP_config(myUART_Handler* uart)
 {	
 	HAL_GPIO_WritePin(RF_Config_GPIO_Port, RF_Config_Pin, GPIO_PIN_RESET);
 		
-	/*Set the destination Adress to 0x66 / Broadcast*/
+	/*Set the destination address to 0x66 / Broadcast*/
 	while(uart->newDataReceived);
 	uart->newDataReceived = 1;
 	
@@ -130,19 +114,19 @@ void myRC1740HP_config(myUART_Handler* uart)
 	uart->uartTXBuf[0] = 0x10;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*set the broadcast adress to 0xFF*/
+	/*set the broadcast address to 0xFF*/
 	uart->uartTXBuf[0] = BROADCAST_ADDRESS;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	uart->uartTXBuf[0] = 0xFF;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*use adressing mode*/
+	/*use addressing mode*/
 	uart->uartTXBuf[0] = ADDRESS_MODE;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	uart->uartTXBuf[0] = 0x02;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*set the pcket lenght*/
+	/*set the packet length*/
 	uart->uartTXBuf[0] = PACKET_LENGHT;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	uart->uartTXBuf[0] = 0x80;
@@ -154,19 +138,19 @@ void myRC1740HP_config(myUART_Handler* uart)
 	uart->uartTXBuf[0] = 0x01;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*set endcharacter*/
+	/*set end character*/
 	uart->uartTXBuf[0] = PACKET_END_CHARACTER;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	uart->uartTXBuf[0] = 0x0D;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*set endcharacter*/
+	/*set end character*/
 	uart->uartTXBuf[0] = CRC_MODE;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	uart->uartTXBuf[0] = 0x00;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
-	/*exti the non volatile memory*/
+	/*exit the non volatile memory*/
 	uart->uartTXBuf[0] = EXIT;
 	HAL_UART_Transmit(uart->InitStruct, (uint8_t*)uart->uartTXBuf,1,1);
 	
@@ -186,11 +170,11 @@ void myRC1740HP_config(myUART_Handler* uart)
 
 //*******************************************************//
 //
-// Function	:	non
+// Function		: non
 // Param		: non
 // RetVal		: non
 //
 void RC1740HP_ERROR(void)
 {
-	while(1);
+	__nop();
 }

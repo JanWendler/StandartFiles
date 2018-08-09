@@ -61,6 +61,49 @@ void SystemClock_Config(void)
   /* SysTick_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
+
+//*******************************************************//
+//
+// Function	:
+// Param		: 
+// RetVal		:
+//
+void MX_GPIO_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	/* GPIO Ports Clock Enable */
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOA_CLK_ENABLE();
+	__HAL_RCC_GPIOB_CLK_ENABLE();
+	
+	/*Configure GPIOA */
+	HAL_GPIO_WritePin(GPIOA, 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | 
+														GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 , GPIO_PIN_RESET);
+	GPIO_InitStruct.Pin = 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | 
+													GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	
+	/*Configure RF_Config_Pin*/
+	HAL_GPIO_WritePin(RF_Config_GPIO_Port, RF_Config_Pin, GPIO_PIN_SET);
+	GPIO_InitStruct.Pin = RF_Config_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(RF_Config_GPIO_Port, &GPIO_InitStruct);
+	
+	
+	/*Configure GPIOB*/
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, GPIO_PIN_RESET);
+	GPIO_InitStruct.Pin = 	 GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+}
+
 #if myI2C1
 //*******************************************************//
 //
@@ -113,6 +156,54 @@ void MX_I2C2_Init(I2C_HandleTypeDef *hi2c2)
 }
 #endif /*myI2C2*/
 
+#if myUSART1
+//*******************************************************//
+//
+// Function	:
+// Param		: 
+// RetVal		:
+//
+void MX_USART1_Init(UART_HandleTypeDef *huart1)
+{
+  huart1->Instance = USART1;
+  huart1->Init.BaudRate = 19200;
+  huart1->Init.WordLength = UART_WORDLENGTH_8B;
+  huart1->Init.StopBits = UART_STOPBITS_1;
+  huart1->Init.Parity = UART_PARITY_NONE;
+  huart1->Init.Mode = UART_MODE_TX_RX;
+  huart1->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1->Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(huart1) != HAL_OK)
+  {
+    INIT_ERROR();
+  }
+}
+#endif /*myUSART1*/
+
+#if myUSART2
+//*******************************************************//
+//
+// Function	:
+// Param		: 
+// RetVal		:
+//
+void MX_USART2_Init(UART_HandleTypeDef *huart2)
+{
+  huart2->Instance = USART2;
+  huart2->Init.BaudRate = 19200;
+  huart2->Init.WordLength = UART_WORDLENGTH_8B;
+  huart2->Init.StopBits = UART_STOPBITS_1;
+  huart2->Init.Parity = UART_PARITY_NONE;
+  huart2->Init.Mode = UART_MODE_TX_RX;
+  huart2->Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2->Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(huart2) != HAL_OK)
+  {
+    INIT_ERROR();
+  }
+}
+#endif /*myUSART2*/
+
 #if myUSART3
 //*******************************************************//
 //
@@ -136,6 +227,35 @@ void MX_USART3_Init(UART_HandleTypeDef *huart3)
   }
 }
 #endif /*myUSART3*/
+
+#if mySPI1
+//*******************************************************//
+//
+// Function	:
+// Param		: 
+// RetVal		:
+//
+void MX_SPI1_Init(SPI_HandleTypeDef *hspi1)
+{
+
+  hspi1->Instance = SPI1;
+  hspi1->Init.Mode = SPI_MODE_MASTER;
+  hspi1->Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1->Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1->Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1->Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1->Init.NSS = SPI_NSS_SOFT;
+  hspi1->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi1->Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1->Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1->Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1->Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(hspi1) != HAL_OK)
+  {
+    INIT_ERROR();
+  }
+}
+#endif /*mySPI1*/
 
 #if mySPI2
 //*******************************************************//
@@ -166,49 +286,7 @@ void MX_SPI2_Init(SPI_HandleTypeDef *hspi2)
 }
 #endif /*mySPI2*/
 
-//*******************************************************//
-//
-// Function	:
-// Param		: 
-// RetVal		:
-//
-void MX_GPIO_Init(void)
-{
 
-  GPIO_InitTypeDef GPIO_InitStruct;
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOA_CLK_ENABLE();
-  __HAL_RCC_GPIOB_CLK_ENABLE();
-	
-	/*Configure GPIOA */
-  HAL_GPIO_WritePin(GPIOA, 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | 
-														GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7 , GPIO_PIN_RESET);
-  GPIO_InitStruct.Pin = 	GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3 | GPIO_PIN_4 | 
-													GPIO_PIN_5 | GPIO_PIN_6 | GPIO_PIN_7;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-	
-	/*Configure RF_Config_Pin*/
-	HAL_GPIO_WritePin(RF_Config_GPIO_Port, RF_Config_Pin, GPIO_PIN_SET);
-	GPIO_InitStruct.Pin = RF_Config_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(RF_Config_GPIO_Port, &GPIO_InitStruct);
-	
-	
-  /*Configure GPIOB*/
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3, GPIO_PIN_RESET);
-  GPIO_InitStruct.Pin = 	 GPIO_PIN_0 | GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_3;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-}
 
 #if myTIM1
 //*******************************************************//
@@ -219,12 +297,12 @@ void MX_GPIO_Init(void)
 //
 void MX_TIM1_Init(TIM_HandleTypeDef *htim1)
 {
-  htim1->Instance = TIM1;
-  htim1->Init.Prescaler = 8000000;
-  htim1->Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1->Init.Period = 60;
-  htim1->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim1->Init.RepetitionCounter = 0;
+	htim1->Instance = TIM1;
+	htim1->Init.Prescaler = 8000000;
+	htim1->Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim1->Init.Period = 60;
+	htim1->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim1->Init.RepetitionCounter = 0;
 	HAL_TIM_Base_Init(htim1);
 }
 #endif /*myTIM1*/
@@ -239,16 +317,16 @@ void MX_TIM1_Init(TIM_HandleTypeDef *htim1)
 void MX_TIM2_Init(TIM_HandleTypeDef *htim2)
 {
 	__TIM2_CLK_ENABLE();
-  htim2->Instance = TIM2;
-  htim2->Init.Prescaler = 320;
-  htim2->Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2->Init.Period = 40;
-  htim2->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2->Init.RepetitionCounter = 0;
+	htim2->Instance = TIM2;
+	htim2->Init.Prescaler = 320;
+	htim2->Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim2->Init.Period = 40;
+	htim2->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim2->Init.RepetitionCounter = 0;
 	HAL_TIM_Base_Init(htim2);
 	
 	HAL_NVIC_SetPriority(TIM2_IRQn, 0, 1);
-  HAL_NVIC_EnableIRQ(TIM2_IRQn);
+	HAL_NVIC_EnableIRQ(TIM2_IRQn);
 }
 #endif /*myTIM2*/
 
@@ -262,16 +340,16 @@ void MX_TIM2_Init(TIM_HandleTypeDef *htim2)
 void MX_TIM3_Init(TIM_HandleTypeDef *htim3)
 {
 	__TIM3_CLK_ENABLE();
-  htim3->Instance = TIM3;
-  htim3->Init.Prescaler = 319;
-  htim3->Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim3->Init.Period = 39;
-  htim3->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim3->Init.RepetitionCounter = 0;
+	htim3->Instance = TIM3;
+	htim3->Init.Prescaler = 319;
+	htim3->Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim3->Init.Period = 39;
+	htim3->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim3->Init.RepetitionCounter = 0;
 	HAL_TIM_Base_Init(htim3);
 	
 	HAL_NVIC_SetPriority(TIM3_IRQn, 0, 2);
-  HAL_NVIC_EnableIRQ(TIM3_IRQn);
+	HAL_NVIC_EnableIRQ(TIM3_IRQn);
 }
 #endif /*myTIM3*/
 
@@ -282,17 +360,18 @@ void MX_TIM3_Init(TIM_HandleTypeDef *htim3)
 // Param		: 
 // RetVal		:
 //
-void MX_TIM1_Init(TIM_HandleTypeDef *htim4)
+void MX_TIM4_Init(TIM_HandleTypeDef *htim4)
 {
-  htim4->Instance = TIM4;
-  htim4->Init.Prescaler = 8000000;
-  htim4->Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4->Init.Period = 60;
-  htim4->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim4->Init.RepetitionCounter = 0;
+	htim4->Instance = TIM4;
+	htim4->Init.Prescaler = 8000000;
+	htim4->Init.CounterMode = TIM_COUNTERMODE_UP;
+	htim4->Init.Period = 60;
+	htim4->Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+	htim4->Init.RepetitionCounter = 0;
 	HAL_TIM_Base_Init(htim4);
+	
 	HAL_NVIC_SetPriority(TIM4_IRQn, 0, 2);
-  HAL_NVIC_EnableIRQ(TIM4_IRQn);
+	HAL_NVIC_EnableIRQ(TIM4_IRQn);
 }
 #endif /*myTIM4*/
 
@@ -304,5 +383,5 @@ void MX_TIM1_Init(TIM_HandleTypeDef *htim4)
 //
 void INIT_ERROR(void)
 {
-	while(1);
+	__nop(1);
 }

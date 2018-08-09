@@ -13,8 +13,8 @@
 
 //*******************************************************//
 //
-// Function	:	Start the heater on the SHT31 sensor
-// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send
+// Function		: Start the heater on the SHT31 sensor.
+// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send.
 // RetVal		: non
 //
 void mySHT31_Heater_ON(myI2C_Handler *i2c)
@@ -30,9 +30,9 @@ void mySHT31_Heater_ON(myI2C_Handler *i2c)
 
 //*******************************************************//
 //
-// Function	:	Stop the heater on the SHT31 sensor
-// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send
-// RetVal		:	non
+// Function		: Stop the heater on the SHT31 sensor.
+// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send.
+// RetVal		: non
 //
 void mySHT31_Heater_OFF(myI2C_Handler *i2c)
 {
@@ -46,9 +46,9 @@ void mySHT31_Heater_OFF(myI2C_Handler *i2c)
 
 //*******************************************************//
 //
-// Function	:	Read the status register of the SHT31 sensor
-// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send
-// RetVal		:	non
+// Function		: Read the status register of the SHT31 sensor.
+// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send.
+// RetVal		: non
 //
 void mySHT31_Status_Read(myI2C_Handler *i2c)
 {
@@ -69,9 +69,9 @@ void mySHT31_Status_Read(myI2C_Handler *i2c)
 
 //*******************************************************//
 //
-// Function	:	Clear the status register of the STH31 sensor
-// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send
-// RetVal		:	non
+// Function		: Clear the status register of the STH31 sensor.
+// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send.
+// RetVal		: non
 //
 void mySHT31_Status_Clear(myI2C_Handler *i2c)
 {
@@ -85,11 +85,11 @@ void mySHT31_Status_Clear(myI2C_Handler *i2c)
 
 //*******************************************************//
 //
-// Function	:	start the measurment with the chosen mode
-// Param		: myI2C_Handler *i2c 			->	includes the I2Cbus on which the data should be send
-//						uint8_t mode						->	the mode which the Sensor should operate with. @ref SHT31_MODES
-//						uint8_t repeatability		->	sets the measurement duration or the repeatability @ref SHT31_REPEATABILITY
-// RetVal		:	non
+// Function		: start the measurement with the chosen mode
+// Param		: myI2C_Handler *i2c 		->	includes the I2Cbus on which the data should be send.
+// Param		: uint8_t mode				->	the mode which the Sensor should operate with. 		@ref SHT31_MODES
+// Param		: uint8_t repeatability		->	sets the measurement duration or the repeatability.	@ref SHT31_REPEATABILITY
+// RetVal		: non
 //
 void mySHT31_Start(myI2C_Handler *i2c, uint8_t mode, uint8_t repeatability)
 {
@@ -97,7 +97,6 @@ void mySHT31_Start(myI2C_Handler *i2c, uint8_t mode, uint8_t repeatability)
 	i2c->TXInfo.Register = mode;
 	i2c->TXInfo.Data[0] = repeatability;
 	i2c->TXInfo.Size = 1;
-	
 	
 	/*request Data*/
 	myI2C_Write(i2c);
@@ -114,9 +113,9 @@ void mySHT31_Start(myI2C_Handler *i2c, uint8_t mode, uint8_t repeatability)
 
 //*******************************************************//
 //
-// Function	: 
-// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send
-// RetVal		:	non
+// Function		: 
+// Param		: myI2C_Handler *i2c 	->	includes the I2Cbus on which the data should be send.
+// RetVal		: non
 //
 void mySHT31_Stop(myI2C_Handler *i2c)
 {
@@ -130,11 +129,11 @@ void mySHT31_Stop(myI2C_Handler *i2c)
 
 //*******************************************************//
 //
-// Function	:
+// Function		:
 // Param		: 
 // RetVal		:
 //
 void SHT31_ERROR()
 {
-	while(1);
+	__nop();
 }
