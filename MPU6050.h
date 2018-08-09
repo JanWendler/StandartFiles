@@ -3,7 +3,7 @@
 //	Name		:	Jan Wendler
 //	cDate		:	23.01.2018
 //	wDate		:	23.01.2018
-//	Projekt		: VR_RC_SIMULATION
+//	Projekt	: 
 //	File		: MPU6050.h
 //	Function: 
 //
