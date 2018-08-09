@@ -3,7 +3,7 @@
 //	Name		:	Jan Wendler
 //	cDate		:	16.04.2018
 //	wDate		:	07.05.2018
-//	Projekt	: IPA Messstation
+//	Projekt	: 
 //	File		: SHT31.c
 //	Function: 
 //

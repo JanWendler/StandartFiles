@@ -3,7 +3,7 @@
 //	Name		:	Jan Wendler
 //	cDate		:	23.04.2018
 //	wDate		:	07.05.2018
-//	Projekt	: IPA Hauptstation
+//	Projekt	: 
 //	File		: RC1740HP.h
 //	Function: 
 //
