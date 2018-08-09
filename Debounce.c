@@ -1,9 +1,9 @@
 //*******************************************************//
 //
-//	Name		:	Jan Wendler
-//	cDate		:	23.01.2018
-//	wDate		:	23.01.2018
-//	Projekt	: 
+//	Name		: Jan Wendler
+//	cDate		: 23.01.2018
+//	wDate		: 23.01.2018
+//	Project		: 
 //	File		: Debounce.c
 //	Function: 
 //

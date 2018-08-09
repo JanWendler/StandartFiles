@@ -1,11 +1,11 @@
 //*******************************************************//
 //
-//	Name		:	Jan Wendler
+//	Name		: Jan Wendler
 //	cDate		:	
 //	wDate		:	
-//	Projekt	: 
+//	Project		: 
 //	File		: Debounce.h
-//	Function: 
+//	Function	: 
 //
 
 #ifndef _DEBOUNCE_H_

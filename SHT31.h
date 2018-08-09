@@ -1,11 +1,11 @@
 //*******************************************************//
 //
-//	Name		:	Jan Wendler
-//	cDate		:	16.04.2018
-//	wDate		:	07.05.2018
-//	Projekt	: 
+//	Name		: Jan Wendler
+//	cDate		: 16.04.2018
+//	wDate		: 07.05.2018
+//	Project		: 
 //	File		: SHT31.h
-//	Function: 
+//	Function	: 
 //
 //
 #ifndef _SHT31_H_

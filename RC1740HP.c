@@ -1,11 +1,11 @@
 //*******************************************************//
 //
-//	Name		:	Jan Wendler
-//	cDate		:	23.04.2018
-//	wDate		:	07.05.2018
-//	Projekt	: 
+//	Name		: Jan Wendler
+//	cDate		: 23.04.2018
+//	wDate		: 07.05.2018
+//	Project		: 
 //	File		: RC1740HP.c
-//	Function: 
+//	Function	: 
 //
 //
 
