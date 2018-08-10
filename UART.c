@@ -145,50 +145,44 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if(huart->Instance == USART3) UARTStruct = &UART3Struct;
 	#endif
 	
-	/*check for start bit*/
-	if(UARTStruct->uartRXBuf[0] == '#')
+	if(Protocol_start == 0)
 	{
-		Protocol_start = 1;
 		current_case = 0;
+		step_count = 0;
 	}
-	if(UARTStruct->uartRXBuf[0] == '>')
+	
+	switch(current_case)
 	{
-		UARTStruct->newDataReceived = 0;
-	}
-	if(Protocol_start)
-	{
-		/*Decode Protocol and assigne it to the right place*/
-		switch(current_case)
-		{
-			case 0: //start
+		case 0: //start
+			/*check for startbit*/
+			if(UARTStruct->uartRXBuf[0] == '#')
+			{
+				Protocol_start = 1;
 				current_case++;
-				break;
-			case 1: //Device
-				UARTStruct->RxProtocol.Device = ((UARTDevice)UARTStruct->uartRXBuf[0]);
+			}
+			break;
+		case 1: //Device
+			UARTStruct->RxProtocol.Device = ((UARTDevice)UARTStruct->uartRXBuf[0]);
+			current_case++;
+			break;
+		case 2: //Size
+			UARTStruct->RxProtocol.Size = UARTStruct->uartRXBuf[0];
+			current_case++;
+			break;
+		case 3: //Data
+			UARTStruct->RxProtocol.Data[step_count] = UARTStruct->uartRXBuf[0];
+			if(step_count >= (UARTStruct->RxProtocol.Size-1))
+			{
+				step_count = 0;
 				current_case++;
-				break;
-			case 2: //Module
-				UARTStruct->RxProtocol.Module = ((TargetModule) UARTStruct->uartRXBuf[0]);
-				current_case++;
-				break;
-			case 3: //Size
-				UARTStruct->RxProtocol.Size = UARTStruct->uartRXBuf[0];
-				current_case++;
-				break;
-			case 4: //Data
-				UARTStruct->RxProtocol.Data[step_count] = UARTStruct->uartRXBuf[0];
-				if(step_count >= (UARTStruct->RxProtocol.Size-1))
-				{
-					step_count = 0;
-					current_case++;
-				}
-				else
-				{
-					step_count++;
-				}
-				break;
-			case 5:
+			}
+			else step_count++;
+			break;
+		case 4:
+			if(step_count == 0)
+			{
 				UARTStruct->RxProtocol.CS = 0;
+				ProtocolCS = 0;
 				/*make check sum*/
 				for(i = 0; i < UARTStruct->RxProtocol.Size; i++)
 				{
@@ -196,24 +190,43 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 				}
 				UARTStruct->RxProtocol.CS += UARTStruct->RxProtocol.Size;
 				UARTStruct->RxProtocol.CS += UARTStruct->RxProtocol.Device;
-				UARTStruct->RxProtocol.CS += UARTStruct->RxProtocol.Module;
 				
-				ProtocolCS = ((UARTStruct->uartRXBuf[(3+UARTStruct->RxProtocol.Size)]<<8) | (UARTStruct->uartRXBuf[(3+UARTStruct->RxProtocol.Size+1)]));
+				ProtocolCS |= (UARTStruct->uartRXBuf[0]<<8);
+			}
+			if(step_count == 1)
+			{
+				ProtocolCS |= (UARTStruct->uartRXBuf[0]);
 				/*test check sum*/
-				if(UARTStruct->RxProtocol.CS != ProtocolCS)
-				{
-					__nop();
-				}
-				else
+				if(UARTStruct->RxProtocol.CS != ProtocolCS) Protocol_start = 0;
+				else 
 				{
 					UARTStruct->newDataReceived = 1;
-					current_case = 0;
 					Protocol_start = 0;
+					step_count = 0;
 				}
+			}
+			step_count++;
+//			ProtocolCS = ((UARTStruct->uartRXBuf[(3+UARTStruct->RxProtocol.Size)]<<8) | (UARTStruct->uartRXBuf[(3+UARTStruct->RxProtocol.Size+1)]));
+			break;
+//		case 5:
+//			if(UARTStruct->uartRXBuf[0] == 0x0D)
+//			{
+//				UARTStruct->newDataReceived = 1;
+//				Protocol_start = 0;
+//			}
+//			else Protocol_start = 0;
+//			break;
+		
+//		case 6:
+//			if(UARTStruct->uartRXBuf[0] == 0x0A)
+//			{
+//				UARTStruct->newDataReceived = 1;
+//				Protocol_start = 0;
+//			}
+//			else Protocol_start = 0;
+//			break;			
+		default:
 				break;
-			default:
-					break;
-		}
 	}
 	/*initiate the next receice interrupt*/
 	HAL_UART_Receive_IT(UARTStruct->InitStruct, (uint8_t*)UARTStruct->uartRXBuf, 1);
